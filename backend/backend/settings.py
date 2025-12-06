@@ -133,9 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
-# Archivos multimedia (subidos por usuarios o del sistema)
-MEDIA_URL = '/media/'  # URL para acceder a los archivos
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta física
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 horas

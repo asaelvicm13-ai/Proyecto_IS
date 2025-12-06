@@ -41,6 +41,7 @@ class Artistas(models.Model):
 
     def __str__(self):
         return self.nombre
+    
 class Usuario(models.Model):
     usuario_id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)  # Aumentado
@@ -127,7 +128,55 @@ class CancionesArtistas(models.Model):
         db_table = 'canciones_artistas'
 
 
+class Playlist(models.Model):
+    playlist_id = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='usuario_id', blank=True, null=True)
+    nombre = models.CharField(max_length=30, blank=True, null=True)
+    fecha_creacion = models.DateField(blank=True, null=True)
+    imagen_portada = models.CharField(max_length=500, blank=True, null=True)
+    es_publica = models.IntegerField(default=0)
 
+    class Meta:
+        managed = False
+        db_table = 'playlists'
+
+class PlaylistsCanciones(models.Model):
+    playlist = models.ForeignKey(Playlist, models.DO_NOTHING, db_column='playlist_id')
+    cancion = models.ForeignKey(Canciones, models.DO_NOTHING, db_column='cancion_id')
+    orden = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'playlists_canciones'
+
+class FavoritosCanciones(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='usuario_id')
+    cancion = models.ForeignKey(Canciones, models.DO_NOTHING, db_column='cancion_id')
+    es_favorito = models.IntegerField(default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'favoritos_canciones'
+
+class FavoritosAlbumes(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='usuario_id')
+    album = models.ForeignKey(Albumes, models.DO_NOTHING, db_column='album_id')
+    es_favorito = models.IntegerField(default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'favoritos_albumes'
+
+class RedesSociales(models.Model):
+    red_id = models.AutoField(primary_key=True, db_column='id') 
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='usuario_id')
+    nombre_red = models.CharField(max_length=50, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'redes_sociales'
+              
 class ReaccionesCanciones(models.Model):
     reaccion_id = models.AutoField(primary_key=True)
     usuario_id = models.IntegerField()
