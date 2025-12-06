@@ -300,22 +300,21 @@ def guardar_generos(request):
 
 def lista_reproduccion(request):
     """Vista para mostrar las canciones reales de la BD"""
-    generos_seleccionados = request.session.get('generos_favoritos', [])
-    if not generos_seleccionados or len(generos_seleccionados) != 3:
-        messages.warning(request, 'Primero debes seleccionar 3 géneros musicales')
-        return redirect('home')
-    
-    # 1. RECUPERAR USUARIO (Para la foto del header)
+        
+    # Obtener ID del usuario logueado
     uid = request.session.get('usuario_id')
     if not uid: return redirect('login')
     try:
         usuario_actual = Usuario.objects.get(usuario_id=uid)
     except Usuario.DoesNotExist:
         return redirect('login')
-
     
-    # Obtener ID del usuario logueado
-    usuario_id = request.session.get('usuario_id')
+    generos_seleccionados = request.session.get('generos_favoritos', [])
+    if not generos_seleccionados or len(generos_seleccionados) != 3:
+        messages.warning(request, 'Primero debes seleccionar 3 géneros musicales')
+        return redirect('home')
+
+
 
     todas_las_canciones = []
     
@@ -375,7 +374,7 @@ def lista_reproduccion(request):
                 LIMIT 10
             """
             # Parámetros: usuario_id para reacción personal, luego los 3 géneros
-            params = [usuario_id, usuario_id] + generos_seleccionados
+            params = [uid, uid] + generos_seleccionados
             
             print(f"🔍 Parámetros: {params}")
             print(f"📝 Géneros: {generos_seleccionados}")
@@ -435,8 +434,8 @@ def lista_reproduccion(request):
     context = {
         'canciones': todas_las_canciones,
         'generos_seleccionados': generos_seleccionados,
-        'total_canciones': len(todas_las_canciones)
-        #'usuario': usuario_actual
+        'total_canciones': len(todas_las_canciones),
+        'usuario': usuario_actual
     }
     
     return render(request, 'interfaz/lista_reproduccion.html', context)

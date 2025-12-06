@@ -24,7 +24,7 @@ urlpatterns = [
     # Géneros
     path('generos/', views.seleccionar_generos, name='seleccionar_generos'),
 
-     # Redes Sociales
+    # Redes Sociales
     path('perfil/eliminar-red/<int:red_id>/', views.eliminar_red_social, name='eliminar_red_social'),
 
     # Álbumes
@@ -35,7 +35,7 @@ urlpatterns = [
     path('playlists/', views.mis_playlists, name='mis_playlists'),
     path('playlist/<int:playlist_id>/', views.ver_playlist, name='ver_playlist'),
 
-     # Favoritos
+    # Favoritos
     path('favoritos/', views.mis_favoritos, name='mis_favoritos'),
 
     # Favoritos AJAX
